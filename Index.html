@@ -1,86 +1,400 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Electricity Challenge ⚡</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar T6 Game</title>
 
 <style>
 body{
-font-family:Arial;
-text-align:center;
-background:linear-gradient(135deg,#0f172a,#1e3a8a);
-color:white;
+font-family:Arial,sans-serif;
+background:linear-gradient(135deg,#f4f7ff,#fff4fb);
 padding:20px;
 }
 
-.card{
-background:white;
-color:black;
+.container{
 max-width:800px;
 margin:auto;
-padding:20px;
-border-radius:20px;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
 }
 
-button{
+h1{
+text-align:center;
+}
+
+#question{
+font-size:22px;
+font-weight:bold;
+margin:20px 0;
+}
+
+.option{
 display:block;
-width:90%;
-margin:10px auto;
-padding:15px;
-font-size:18px;
-border:none;
+width:100%;
+padding:12px;
+margin:10px 0;
+font-size:16px;
+border:2px solid #ddd;
 border-radius:10px;
 cursor:pointer;
-background:#e5e7eb;
+background:white;
+text-align:left;
 }
 
-button:hover{
-background:#bfdbfe;
+.option:hover{
+background:#f5f5f5;
 }
 
 .correct{
-background:#4caf50 !important;
-color:white;
+background:#d4edda;
+border-color:green;
 }
 
 .wrong{
-background:#f44336 !important;
+background:#f8d7da;
+border-color:red;
+}
+
+#feedback{
+margin-top:15px;
+padding:15px;
+border-radius:10px;
+display:none;
+}
+
+#nextBtn{
+padding:12px 20px;
+border:none;
+background:#6d5dfc;
 color:white;
+border-radius:10px;
+cursor:pointer;
+margin-top:15px;
 }
 
-#timer{
-font-size:24px;
-color:#ff9800;
-font-weight:bold;
-}
-
-#score{
-font-size:22px;
-font-weight:bold;
+.hidden{
+display:none;
 }
 </style>
 </head>
 
 <body>
 
-<h1>⚡ Electricity Challenge ⚡</h1>
+<div class="container">
 
-<div class="card">
+<h1>Grammar T6 Game</h1>
 
-<div id="score">Score: 0</div>
+<div id="score">
+Score: 0
+</div>
 
-<div id="timer">15</div>
-
-<h2 id="question"></h2>
+<div id="question"></div>
 
 <div id="answers"></div>
 
-<h2 id="result"></h2>
+<div id="feedback"></div>
 
-<button id="next" onclick="nextQuestion()" style="display:none">
-Next Question
+<button id="nextBtn">
+Next
 </button>
 
 </div>
 
 <script>
+
+ const questions = [
+
+{
+question:"Our school was having an art contest. I decided to enter.",
+answers:[
+"Our school was having an art contest, and I decided to enter.",
+"Our school was having an art contest I decided to enter.",
+"Our school was having an art contest, but I decided to enter.",
+"Because our school was having an art contest, and I decided."
+],
+correct:"Our school was having an art contest, and I decided to enter.",
+explanation:"Use 'and' to combine two related complete sentences."
+},
+
+{
+question:"My teacher encouraged me to participate. My teacher gave me the entry forms.",
+answers:[
+"My teacher encouraged me to participate and gave me the entry forms.",
+"My teacher encouraged me to participate, and my teacher gave me.",
+"My teacher encouraged me to participate but gave me the entry forms.",
+"My teacher encouraged me to participate gave me the entry forms."
+],
+correct:"My teacher encouraged me to participate and gave me the entry forms.",
+explanation:"The same subject performs two actions, so use a compound predicate."
+},
+
+{
+question:"My first painting wasn't very good. I did much better with the next one.",
+answers:[
+"My first painting wasn't very good, but I did much better with the next one.",
+"My first painting wasn't very good, and I did much better with the next one.",
+"My first painting wasn't very good I did much better with the next one.",
+"My first painting wasn't very good but did much better with the next one."
+],
+correct:"My first painting wasn't very good, but I did much better with the next one.",
+explanation:"Use 'but' because the ideas contrast."
+},
+
+{
+question:"I can run (fast) than my brother.",
+answers:[
+"faster",
+"fastest",
+"more fast",
+"most fast"
+],
+correct:"faster",
+explanation:"Fast is a short adverb, so add -er."
+},
+
+{
+question:"Our father runs (quickly) of all.",
+answers:[
+"most quickly",
+"more quickly",
+"quicklier",
+"quickliest"
+],
+correct:"most quickly",
+explanation:"'Of all' means compare more than two, so use most."
+},
+
+{
+question:"He trains (often) than my brother does.",
+answers:[
+"more often",
+"most often",
+"oftener",
+"oftenest"
+],
+correct:"more often",
+explanation:"'Than' compares two actions."
+},
+
+{
+question:"He enjoys running (fully) than biking.",
+answers:[
+"more fully",
+"most fully",
+"fuller",
+"fullest"
+],
+correct:"more fully",
+explanation:"Use more with adverbs ending in -ly."
+},
+
+{
+question:"Even so, he practices swimming (seriously) of all.",
+answers:[
+"most seriously",
+"more seriously",
+"seriouslier",
+"seriousliest"
+],
+correct:"most seriously",
+explanation:"'Of all' requires the superlative form."
+},
+
+{
+question:"I prefer team sports (strongly) than other sports.",
+answers:[
+"more strongly",
+"most strongly",
+"stronglier",
+"strongest"
+],
+correct:"more strongly",
+explanation:"Use more with -ly adverbs."
+},
+
+{
+question:"I can throw (accurately) than our team's other pitcher.",
+answers:[
+"more accurately",
+"most accurately",
+"accurater",
+"accuratest"
+],
+correct:"more accurately",
+explanation:"Comparing two actions requires 'more accurately'."
+},
+
+{
+question:"In the entire league, she pitches (wildly) of all.",
+answers:[
+"most wildly",
+"more wildly",
+"wildlier",
+"wildliest"
+],
+correct:"most wildly",
+explanation:"The phrase 'of all' requires the superlative."
+},
+
+{
+question:"Our final game will be here (soon) than we expect.",
+answers:[
+"sooner",
+"soonest",
+"more soon",
+"most soon"
+],
+correct:"sooner",
+explanation:"Soon is a short adverb, so add -er."
+},
+
+{
+question:"The audience will cheer (loudly) of all during our final inning.",
+answers:[
+"most loudly",
+"more loudly",
+"loudlier",
+"loudliest"
+],
+correct:"most loudly",
+explanation:"'Of all' means use the superlative form."
+}
+
+];
+
+function shuffle(arr){
+return arr.sort(()=>Math.random()-0.5);
+}
+
+questions.forEach(q=>shuffle(q.answers));
+
+let currentQuestion=0;
+let score=0;
+
+  const questionElement=document.getElementById("question");
+const answersElement=document.getElementById("answers");
+const feedbackElement=document.getElementById("feedback");
+const scoreElement=document.getElementById("score");
+const nextBtn=document.getElementById("nextBtn");
+
+function loadQuestion(){
+
+feedbackElement.style.display="none";
+feedbackElement.innerHTML="";
+nextBtn.style.display="none";
+
+let q=questions[currentQuestion];
+
+questionElement.innerHTML=
+`<b>Question ${currentQuestion+1} of ${questions.length}</b><br><br>${q.question}`;
+
+answersElement.innerHTML="";
+
+q.answers.forEach(answer=>{
+
+let button=document.createElement("button");
+
+button.innerText=answer;
+button.classList.add("option");
+
+button.onclick=()=>selectAnswer(button,answer);
+
+answersElement.appendChild(button);
+
+});
+
+}
+
+function selectAnswer(button,selectedAnswer){
+
+let q=questions[currentQuestion];
+
+let buttons=document.querySelectorAll(".option");
+
+buttons.forEach(btn=>btn.disabled=true);
+
+if(selectedAnswer===q.correct){
+
+button.classList.add("correct");
+
+score++;
+
+scoreElement.innerHTML=`Score: ${score}`;
+
+feedbackElement.className="";
+feedbackElement.style.display="block";
+feedbackElement.innerHTML=
+`✅ Correct!`;
+
+}else{
+
+button.classList.add("wrong");
+
+buttons.forEach(btn=>{
+
+if(btn.innerText===q.correct){
+btn.classList.add("correct");
+}
+
+});
+
+feedbackElement.className="";
+feedbackElement.style.display="block";
+
+feedbackElement.innerHTML=
+`
+❌ Wrong Answer
+
+<br><br>
+
+<b>Correct Answer:</b><br>
+${q.correct}
+
+<br><br>
+
+<b>Explanation:</b><br>
+${q.explanation}
+`;
+
+}
+
+nextBtn.style.display="inline-block";
+
+}
+
+nextBtn.addEventListener("click",()=>{
+
+currentQuestion++;
+
+if(currentQuestion<questions.length){
+
+loadQuestion();
+
+}else{
+
+document.querySelector(".container").innerHTML=
+`
+<h1>Game Finished 🎉</h1>
+
+<h2>Your Score: ${score} / ${questions.length}</h2>
+
+<h2>${Math.round(score/questions.length*100)}%</h2>
+
+<button onclick="location.reload()">
+Play Again
+</button>
+`;
+
+}
+
+});
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
